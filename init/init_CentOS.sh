@@ -17,7 +17,6 @@ if [ "`../functions/get_ip_area.py $public_IP`" == 'CN' ];then
         /bin/mv /etc/yum.repos.d/CentOS-Base.repo{,_bk}
 	if [ ! -z "$(cat /etc/redhat-release | grep '6\.')" ];then
 		wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
-		#wget -c http://blog.linuxeye.com/wp-content/uploads/2013/12/CentOS6-Base.repo -P /etc/yum.repos.d
 		if [ ! -z "$(cat /etc/redhat-release | grep 'Red Hat')" ];then
 			sed -i 's@\$releasever@6@g' /etc/yum.repos.d/CentOS-Base.repo
 	                sed -i 's@gpgcheck=1@gpgcheck=0@g' /etc/yum.repos.d/CentOS-Base.repo
@@ -26,7 +25,6 @@ if [ "`../functions/get_ip_area.py $public_IP`" == 'CN' ];then
 
 	if [ ! -z "$(cat /etc/redhat-release | grep '5\.')" ];then
 		wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-5.repo
-		#wget -c http://blog.linuxeye.com/wp-content/uploads/2013/12/CentOS5-Base.repo -P /etc/yum.repos.d
 		if [ ! -z "$(cat /etc/redhat-release | grep 'Red Hat')" ];then
 			sed -i 's@\$releasever@5@g' /etc/yum.repos.d/CentOS-Base.repo
 	                sed -i 's@gpgcheck=1@gpgcheck=0@g' /etc/yum.repos.d/CentOS-Base.repo
@@ -168,7 +166,7 @@ service iptables restart
 
 # install tmux
 if [ ! -e "`which tmux`" ];then
-	src_url=http://cloud.github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz && Download_src 
+	src_url=https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz && Download_src 
 	src_url=http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz && Download_src 
 	tar xzf libevent-2.0.21-stable.tar.gz
 	cd libevent-2.0.21-stable
