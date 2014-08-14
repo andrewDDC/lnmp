@@ -153,6 +153,7 @@ cat > /etc/sysconfig/iptables << EOF
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 2222 -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
 -A INPUT -p icmp -m limit --limit 100/sec --limit-burst 100 -j ACCEPT
 -A INPUT -p icmp -m limit --limit 1/s --limit-burst 10 -j ACCEPT
@@ -166,7 +167,7 @@ service iptables restart
 
 # install tmux
 if [ ! -e "`which tmux`" ];then
-	src_url=https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz && Download_src 
+	src_url=http://ncu.dl.sourceforge.net/project/levent/libevent/libevent-2.0/libevent-2.0.21-stable.tar.gz && Download_src 
 	src_url=http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz && Download_src 
 	tar xzf libevent-2.0.21-stable.tar.gz
 	cd libevent-2.0.21-stable
