@@ -1,7 +1,4 @@
 #!/bin/bash
-# Author:  yeho <lj2007331 AT gmail.com>
-# Blog:  http://blog.linuxeye.com
-
 Install_Apache-2-2()
 {
 cd $lnmp_dir/src
@@ -76,7 +73,7 @@ mkdir $apache_install_dir/conf/vhost
 cat > $apache_install_dir/conf/vhost/default.conf << EOF
 NameVirtualHost *:$TMP_PORT
 <VirtualHost *:$TMP_PORT>
-    ServerAdmin admin@linuxeye.com
+    ServerAdmin admin@admin.com
     DocumentRoot "$home_dir/default"
     ServerName $TMP_IP 
     ErrorLog "$wwwlogs_dir/error_apache.log"

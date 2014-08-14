@@ -1,6 +1,6 @@
 #!/bin/bash
-# Author:  yeho <lj2007331 AT gmail.com>
-# Blog:  http://blog.linuxeye.com
+ 
+
 
 # Check if user is root
 [ $(id -u) != "0" ] && echo "Error: You must be root to run this script" && kill -9 $$
@@ -10,7 +10,7 @@ clear
 echo "#######################################################################"
 echo "#         LNMP for CentOS/RadHat 5+ Debian 6+ and Ubuntu 12+          #"
 echo "#                           Uninstall LNMP                            #"
-echo "# For more information Please visit http://blog.linuxeye.com/31.html  #"
+echo "#  #"
 echo "#######################################################################"
 . ./options.conf
 

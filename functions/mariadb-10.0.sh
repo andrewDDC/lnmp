@@ -1,6 +1,4 @@
 #!/bin/bash
-# Author:  yeho <lj2007331 AT gmail.com>
-# Blog:  http://blog.linuxeye.com
 
 Install_MariaDB-10-0()
 {

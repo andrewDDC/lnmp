@@ -1,6 +1,6 @@
 #!/bin/bash
-# Author:  yeho <lj2007331 AT gmail.com>
-# Blog:  http://blog.linuxeye.com
+ 
+
 
 # Check if user is root
 [ $(id -u) != "0" ] && echo "Error: You must be root to run this script" && exit 1
@@ -9,7 +9,7 @@ clear
 printf "
 #######################################################################
 #    LNMP/LAMP/LANMP for CentOS/RadHat 5+ Debian 6+ and Ubuntu 12+    #
-# For more information please visit http://blog.linuxeye.com/31.html  #
+#  #
 #######################################################################
 "
 . ./options.conf
@@ -19,7 +19,7 @@ Input_domain()
 while :
 do
 	echo
-	read -p "Please input domain(example: www.linuxeye.com linuxeye.com): " domain
+	read -p "Please input domain(example: www.example.com example.com): " domain
 	if [ -z "`echo $domain | grep '.*\..*'`" ]; then
 		echo -e "\033[31minput error! \033[0m"
 	else
@@ -50,7 +50,7 @@ if [ "$moredomainame_yn" == 'y' ]; then
         while :
         do
                 echo
-                read -p "Type domainname,example(blog.linuxeye.com bbs.linuxeye.com): " moredomain
+                read -p "Type domainname,example(www.example1.com www.example2.com): " moredomain
                 if [ -z "`echo $moredomain | grep '.*\..*'`" ]; then
                         echo -e "\033[31minput error\033[0m"
                 else
@@ -126,7 +126,7 @@ if [ "$anti_hotlinking_yn" == 'y' ];then
 	else
 		domain_allow_all=$domain_allow
 	fi
-	anti_hotlinking=$(echo -e "location ~ .*\.(wma|wmv|asf|mp3|mmf|zip|rar|jpg|gif|png|swf|flv)$ {\n\tvalid_referers none blocked $domain_allow_all;\n\tif (\$invalid_referer) {\n\t\t#rewrite ^/ http://www.linuxeye.com/403.html;\n\t\treturn 403;\n\t\t}\n\t}")
+	anti_hotlinking=$(echo -e "location ~ .*\.(wma|wmv|asf|mp3|mmf|zip|rar|jpg|gif|png|swf|flv)$ {\n\tvalid_referers none blocked $domain_allow_all;\n\tif (\$invalid_referer) {\n\t\t#rewrite ^/ ;\n\t\treturn 403;\n\t\t}\n\t}")
 else
 	anti_hotlinking=
 fi
@@ -232,7 +232,7 @@ fi
 printf "
 #######################################################################
 #         LNMP for CentOS/RadHat 5+ Debian 6+ and Ubuntu 12+          #
-# For more information please visit http://blog.linuxeye.com/31.html  #
+#  #
 #######################################################################
 "
 echo -e "`printf "%-32s" "Your domain:"`\033[32m$domain\033[0m"
@@ -268,7 +268,7 @@ Create_apache_conf()
 [ ! -d $apache_install_dir/conf/vhost ] && mkdir $apache_install_dir/conf/vhost
 cat > $apache_install_dir/conf/vhost/$domain.conf << EOF
 <VirtualHost *:80>
-    ServerAdmin admin@linuxeye.com 
+    ServerAdmin admin@admin.com 
     DocumentRoot "$vhostdir"
     ServerName $domain
     $Domain_alias
@@ -362,7 +362,7 @@ fi
 [ ! -d $apache_install_dir/conf/vhost ] && mkdir $apache_install_dir/conf/vhost
 cat > $apache_install_dir/conf/vhost/$domain.conf << EOF
 <VirtualHost *:8080>
-    ServerAdmin admin@linuxeye.com
+    ServerAdmin admin@admin.com
     DocumentRoot "$vhostdir"
     ServerName $domain
     $Domain_alias
@@ -392,7 +392,7 @@ fi
 printf "
 #######################################################################
 #        LANMP for CentOS/RadHat 5+ Debian 6+ and Ubuntu 12+          #
-# For more information please visit http://blog.linuxeye.com/31.html  #
+#  #
 #######################################################################
 "
 echo -e "`printf "%-32s" "Your domain:"`\033[32m$domain\033[0m"

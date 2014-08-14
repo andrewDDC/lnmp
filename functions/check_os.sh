@@ -1,6 +1,5 @@
 #!/bin/bash
-# Author:  yeho <lj2007331 AT gmail.com>
-# Blog:  http://blog.linuxeye.com
+ 
 
 if [ -f /etc/redhat-release ];then
         OS=CentOS

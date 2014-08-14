@@ -1,6 +1,4 @@
 #!/bin/bash
-# Author:  yeho <lj2007331 AT gmail.com>
-# Blog:  http://blog.linuxeye.com
 
 Install_ImageMagick()
 {
@@ -8,11 +6,11 @@ cd $lnmp_dir/src
 . ../functions/download.sh
 . ../options.conf
 
-src_url=http://blog.linuxeye.com/lnmp/src/ImageMagick-6.8.9-0.tar.gz && Download_src
+src_url=http://mirrors-usa.go-parts.com/mirrors/ImageMagick/ImageMagick-6.8.9-6.tar.gz && Download_src
 src_url=http://pecl.php.net/get/imagick-3.1.2.tgz && Download_src
 
-tar xzf ImageMagick-6.8.9-0.tar.gz
-cd ImageMagick-6.8.9-0
+tar xzf ImageMagick-6.8.9-6.tar.gz
+cd ImageMagick-6.8.9-6
 ./configure
 make && make install
 cd ../

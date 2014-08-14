@@ -1,14 +1,10 @@
 #!/bin/bash
-# Author:  yeho <lj2007331 AT gmail.com>
-# Blog:  http://blog.linuxeye.com
+ 
+
 #
 # Version: 0.7 7-Apr-2014 lj2007331 AT gmail.com
 # Notes: LNMP/LAMP/LANMP for CentOS/RadHat 5+ Debian 6+ and Ubuntu 12+ 
 #
-# This script's project home is:
-#       http://blog.linuxeye.com/31.html
-#       https://github.com/lj2007331/lnmp
-
 # Check if user is root
 [ $(id -u) != "0" ] && echo "Error: You must be root to run this script" && exit 1 
 
@@ -17,7 +13,7 @@ clear
 printf "
 #######################################################################
 #    LNMP/LAMP/LANMP for CentOS/RadHat 5+ Debian 6+ and Ubuntu 12+    #
-# For more information please visit http://blog.linuxeye.com/31.html  #
+#  #
 #######################################################################"
 
 #get pwd
