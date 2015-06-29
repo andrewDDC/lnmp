@@ -9,20 +9,12 @@ cd $lnmp_dir/src
 . ../functions/check_os.sh
 . ../options.conf
 
-src_url=http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz && Download_src 
-src_url=http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.17.tar.gz && Download_src
+src_url=http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.23.tar.gz && Download_src
 
 useradd -M -s /sbin/nologin mysql
 mkdir -p $mysql_data_dir;chown mysql.mysql -R $mysql_data_dir
-if [ ! -e "`which cmake`" ];then
-        tar xzf cmake-2.8.12.2.tar.gz
-        cd cmake-2.8.12.2
-        CFLAGS= CXXFLAGS= ./configure
-        make && make install
-        cd ..
-fi
-tar zxf mysql-5.6.17.tar.gz
-cd mysql-5.6.17
+tar zxf mysql-5.6.23.tar.gz
+cd mysql-5.6.23
 if [ "$je_tc_malloc" == '1' ];then
         EXE_LINKER="-DCMAKE_EXE_LINKER_FLAGS='-ljemalloc'"
 elif [ "$je_tc_malloc" == '2' ];then
@@ -38,6 +30,7 @@ cmake . -DCMAKE_INSTALL_PREFIX=$mysql_install_dir \
 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
 -DWITH_MYISAM_STORAGE_ENGINE=1 \
 -DENABLED_LOCAL_INFILE=1 \
+-DENABLE_DTRACE=0 \
 -DDEFAULT_CHARSET=utf8 \
 -DDEFAULT_COLLATION=utf8_general_ci \
 -DWITH_EMBEDDED_SERVER=1 \
@@ -57,7 +50,9 @@ OS_CentOS='chkconfig --add mysqld \n
 chkconfig mysqld on'
 OS_Debian_Ubuntu='update-rc.d mysqld defaults'
 OS_command
-cd ../../
+cd ..
+/bin/rm -rf mysql-5.6.23
+cd ..
 
 # my.cf
 cat > /etc/my.cnf << EOF
@@ -78,7 +73,7 @@ server-id = 1
 
 skip-name-resolve
 #skip-networking
-back_log = 600
+back_log = 300
 
 max_connections = 1000
 max_connect_errors = 6000
@@ -97,6 +92,7 @@ key_buffer_size = 4M
 
 thread_cache_size = 8
 
+query_cache_type = 1
 query_cache_size = 8M
 query_cache_limit = 2M
 
@@ -184,8 +180,8 @@ $mysql_install_dir/scripts/mysql_install_db --user=mysql --basedir=$mysql_instal
 
 chown mysql.mysql -R $mysql_data_dir
 service mysqld start
-export PATH=$PATH:$mysql_install_dir/bin
-echo "export PATH=\$PATH:$mysql_install_dir/bin" >> /etc/profile
+export PATH=$mysql_install_dir/bin:$PATH
+[ -z "`cat /etc/profile | grep $mysql_install_dir`" ] && echo "export PATH=$mysql_install_dir/bin:\$PATH" >> /etc/profile 
 . /etc/profile
 
 $mysql_install_dir/bin/mysql -e "grant all privileges on *.* to root@'127.0.0.1' identified by \"$dbrootpwd\" with grant option;"
