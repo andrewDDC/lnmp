@@ -1,26 +1,26 @@
 #!/bin/bash
- 
+
 
 
 Install_Nginx()
 {
 cd $lnmp_dir/src
-. ../functions/download.sh 
-. ../functions/check_os.sh 
+. ../functions/download.sh
+. ../functions/check_os.sh
 . ../options.conf
 
-src_url=http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz && Download_src
-src_url=http://nginx.org/download/nginx-1.6.0.tar.gz && Download_src
+src_url=http://downloads.sourceforge.net/project/pcre/pcre/8.36/pcre-8.36.tar.gz && Download_src
+src_url=http://nginx.org/download/nginx-1.9.0.tar.gz && Download_src
 
-tar xzf pcre-8.35.tar.gz
-cd pcre-8.35
+tar xzf pcre-8.36.tar.gz
+cd pcre-8.36
 ./configure
 make && make install
 cd ../
 
-tar xzf nginx-1.6.0.tar.gz
+tar xzf nginx-1.9.0.tar.gz
 useradd -M -s /sbin/nologin www
-cd nginx-1.6.0
+cd nginx-1.9.0
 
 # Modify Nginx version
 
@@ -35,7 +35,7 @@ elif [ "$je_tc_malloc" == '2' ];then
 	chown -R www.www /tmp/tcmalloc
 fi
 
-./configure --prefix=$nginx_install_dir --user=www --group=www --with-http_stub_status_module --with-http_ssl_module --with-http_flv_module --with-http_gzip_static_module $malloc_module
+./configure --prefix=$nginx_install_dir --user=www --group=www --with-http_stub_status_module --with-http_spdy_module --with-http_ssl_module --with-ipv6 --with-http_gzip_static_module --with-http_flv_module $malloc_module
 make && make install
 if [ -d "$nginx_install_dir" ];then
         echo -e "\033[32mNginx install successfully! \033[0m"
@@ -44,7 +44,7 @@ else
         kill -9 $$
 fi
 
-[ -n "`cat /etc/profile | grep 'export PATH='`" -a -z "`cat /etc/profile | grep $nginx_install_dir`" ] && sed -i "s@^export PATH=\(.*\)@export PATH=\1:$nginx_install_dir/bin@" /etc/profile
+[ -n "`cat /etc/profile | grep 'export PATH='`" -a -z "`cat /etc/profile | grep $nginx_install_dir`" ] && sed -i "s@^export PATH=\(.*\)@export PATH=$nginx_install_dir/bin:\1@" /etc/profile
 . /etc/profile
 
 cd ../../
@@ -56,21 +56,19 @@ update-rc.d nginx defaults'
 OS_command
 sed -i "s@/usr/local/nginx@$nginx_install_dir@g" /etc/init.d/nginx
 
-mv $nginx_install_dir/conf/nginx.conf $nginx_install_dir/conf/nginx.conf_bk
-sed -i "s@/home/wwwroot/default@$home_dir/default@" conf/nginx.conf
+mv $nginx_install_dir/conf/nginx.conf{,_bk}
 if [ "$Apache_version" == '1' -o "$Apache_version" == '2' ];then
 	/bin/cp conf/nginx_apache.conf $nginx_install_dir/conf/nginx.conf
 else
 	/bin/cp conf/nginx.conf $nginx_install_dir/conf/nginx.conf
 fi
+sed -i "s@/home/wwwroot/default@$home_dir/default@" $nginx_install_dir/conf/nginx.conf
 sed -i "s@/home/wwwlogs@$wwwlogs_dir@g" $nginx_install_dir/conf/nginx.conf
-[ "$je_tc_malloc" == '2' ] && sed -i 's@^pid\(.*\)@pid\1\ngoogle_perftools_profiles /tmp/tcmalloc;@' $nginx_install_dir/conf/nginx.conf 
+[ "$je_tc_malloc" == '2' ] && sed -i 's@^pid\(.*\)@pid\1\ngoogle_perftools_profiles /tmp/tcmalloc;@' $nginx_install_dir/conf/nginx.conf
 
 # worker_cpu_affinity
 CPU_num=`cat /proc/cpuinfo | grep processor | wc -l`
-if [ $CPU_num == 1 ];then
-        sed -i 's@^worker_processes.*@worker_processes 1;@' $nginx_install_dir/conf/nginx.conf
-elif [ $CPU_num == 2 ];then
+if [ $CPU_num == 2 ];then
         sed -i 's@^worker_processes.*@worker_processes 2;\nworker_cpu_affinity 10 01;@' $nginx_install_dir/conf/nginx.conf
 elif [ $CPU_num == 3 ];then
         sed -i 's@^worker_processes.*@worker_processes 3;\nworker_cpu_affinity 100 010 001;@' $nginx_install_dir/conf/nginx.conf
